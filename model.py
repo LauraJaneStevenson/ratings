@@ -17,14 +17,63 @@ class User(db.Model):
 
     __tablename__ = "users"
 
-    user_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    email = db.Column(db.String(64), nullable=True)
-    password = db.Column(db.String(64), nullable=True)
-    age = db.Column(db.Integer, nullable=True)
-    zipcode = db.Column(db.String(15), nullable=True)
+    user_id = db.Column(db.Integer, 
+                        autoincrement=True, 
+                        primary_key=True)
+    email = db.Column(db.String(64), 
+                        nullable=True)
+    password = db.Column(db.String(64), 
+                        nullable=True)
+    age = db.Column(db.Integer, 
+                        nullable=True)
+    zipcode = db.Column(db.String(15), 
+                        nullable=True)
+
+    def __repr__(self):
+        """Show user info"""
+        return f"User info: user_id={self.user_id} email={self.email}"
 
 
 # Put your Movie and Rating model classes here.
+
+class Rating(db.Model):
+    """Raings of movies."""
+
+    __tablename__ = "ratings"
+
+    rating_id = db.Column(db.Integer,
+                          primary_key=True,
+                          autoincrement=True)
+    movie_id = db.Column(db.Integer)
+
+    user_id = db.Column(db.Integer)
+
+    score = db.Column(db.Integer)
+
+    def __repr__(self):
+        """Show rating info"""
+        return f"Rating info: rating_id={self.rating_id} movie_id={self.movie_id} user_id={self.user_id}"
+
+
+class Movie(db.Model):
+    """Details of movies."""
+
+    __tablename__ = "movies"
+
+    movie_id = db.Column(db.Integer,
+                          autoincrement=True,
+                          primary_key=True)
+    title = db.Column(db.String(100))
+
+    release_at = db.Column(db.DateTime)
+
+    imdb_url = db.Column(db.String(200))
+
+    def __repr__(self):
+        """Show movie info"""
+        return f"Movie info: movie_id={self.movie_id} title={self.title}"
+
+
 
 
 ##############################################################################
