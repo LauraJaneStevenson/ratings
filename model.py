@@ -44,9 +44,9 @@ class Rating(db.Model):
     rating_id = db.Column(db.Integer,
                           primary_key=True,
                           autoincrement=True)
-    movie_id = db.Column(db.Integer)
-
     user_id = db.Column(db.Integer)
+
+    movie_id = db.Column(db.Integer)
 
     score = db.Column(db.Integer)
 
