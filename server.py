@@ -2,10 +2,12 @@
 
 from jinja2 import StrictUndefined
 
-from flask import Flask
+from flask import (Flask, render_template, redirect, request, flash,
+                   session)
+
 from flask_debugtoolbar import DebugToolbarExtension
 
-from model import connect_to_db, db
+from model import User, Rating, Movie, connect_to_db, db
 
 
 app = Flask(__name__)
@@ -22,8 +24,46 @@ app.jinja_env.undefined = StrictUndefined
 @app.route('/')
 def index():
     """Homepage."""
-    return "<html><body>Placeholder for the homepage.</body></html>"
+    return render_template('homepage.html')
 
+
+@app.route("/users")
+def user_list():
+    """ Show list of users."""
+
+    users = User.query.all()
+    return render_template("user_list.html", users=users)
+
+
+@app.route("/register")
+def register_user():
+    """Shows registration page."""
+
+    return render_template("register_form.html")
+
+
+@app.route("/validate", methods=['POST'])
+def validate_user():
+    """Check to see if user exists or not, and add to database accordingly."""
+
+    input_email = request.form.get("email")
+    input_pw = request.form.get("password")
+    input_age = request.form.get("age")
+    input_zip = request.form.get("zipcode")
+
+
+    if db.session.query(User).filter_by(email=input_email).first() == None:
+        # instantiate new user
+        new_user = User(email=input_email,
+                        password=input_pw,
+                        age=input_age,
+                        zipcode=input_zip)
+
+        # add the new user to the DB
+        db.session.add(new_user)
+        db.session.commit()
+
+    return redirect("/")
 
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the
