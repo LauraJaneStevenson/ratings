@@ -35,6 +35,8 @@ def load_users():
     # Once we're done, we should commit our work
     db.session.commit()
 
+    print(db.session.query(User).filter(user.user_id < 10).all())
+
 
 def load_movies():
     """Load movies from u.item into database."""
@@ -45,7 +47,8 @@ def load_movies():
         row = row.rstrip()
         movie_details_list = row.split('|')
 
-        movie_id, title, release_at, imdb_url = movie_details_list[0:4]
+        imdb_url = movie_details_list[4]
+        movie_id, title, release_at = movie_details_list[0:3]
         title = title[:-7]
         release_at = datetime.strptime(release_at, "%d-%b-%Y")  # object
 
