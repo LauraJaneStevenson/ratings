@@ -100,6 +100,16 @@ def logout_user():
     return redirect("/")
     flash("you are now logged out.")
 
+
+
+@app.route("/users/<int:user_id>")
+def show_user_info(user_id):
+
+    # user_id = request.args.get("user_id")
+    user = db.session.query(User).filter_by(user_id=user_id).first()
+
+    return render_template("user_info.html", user=user)
+
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the
     # point that we invoke the DebugToolbarExtension
