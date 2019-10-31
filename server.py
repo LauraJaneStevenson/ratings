@@ -27,6 +27,8 @@ def index():
     return render_template('homepage.html')
 
 
+
+
 @app.route("/users")
 def user_list():
     """ Show list of users."""
@@ -35,11 +37,15 @@ def user_list():
     return render_template("user_list.html", users=users)
 
 
+
+
 @app.route("/register")
 def register_user():
     """Shows registration page."""
 
     return render_template("register_form.html")
+
+
 
 
 @app.route("/validate", methods=['POST'])
@@ -63,7 +69,36 @@ def validate_user():
         db.session.add(new_user)
         db.session.commit()
 
+
+    else:
+        session['email'] = input_email
+
     return redirect("/")
+    flash("You are now logged in.")
+
+
+
+
+@app.route("/login")
+def login_user():
+
+    return render_template("login.html")
+
+
+
+@app.route("/logout")
+def logout_user():
+    
+    del session['email']
+    print('\n')
+    print('\n')
+    print('\n')
+    print(session.get('email', None))
+    print('\n')
+    print('\n')
+
+    return redirect("/")
+    flash("you are now logged out.")
 
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the
